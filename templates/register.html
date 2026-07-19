@@ -1,0 +1,544 @@
+<!-- templates/register.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - Todo The Dodo</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 2rem 0;
+        }
+
+        .register-container {
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 1rem;
+            width: 100%;
+        }
+
+        .register-card {
+            background: white;
+            border-radius: 20px;
+            padding: 2.5rem;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+            animation: slideUp 0.5s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .register-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .brand-icon {
+            font-size: 3rem;
+            color: #6C63FF;
+            margin-bottom: 0.5rem;
+        }
+
+        .register-header h2 {
+            font-weight: 800;
+            color: #2D3436;
+            font-size: 1.8rem;
+        }
+
+        .register-header h2 span {
+            color: #6C63FF;
+        }
+
+        .register-header p {
+            color: #636e72;
+            font-size: 0.95rem;
+            margin-top: 0.3rem;
+        }
+
+        .form-control {
+            border-radius: 12px;
+            padding: 12px 20px;
+            border: 2px solid #e9ecef;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+        }
+
+        .form-control:focus {
+            border-color: #6C63FF;
+            box-shadow: 0 0 0 0.2rem rgba(108, 99, 255, 0.2);
+        }
+
+        .form-control.is-invalid {
+            border-color: #dc3545;
+        }
+
+        .form-control.is-invalid:focus {
+            box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.2);
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: #2D3436;
+            font-size: 0.9rem;
+            margin-bottom: 0.4rem;
+        }
+
+        .input-group-text {
+            background: white;
+            border: 2px solid #e9ecef;
+            border-right: none;
+            border-radius: 12px 0 0 12px;
+            color: #636e72;
+        }
+
+        .input-group .form-control {
+            border-radius: 0 12px 12px 0;
+            border-left: none;
+        }
+
+        .input-group .form-control:focus {
+            border-color: #6C63FF;
+        }
+
+        .input-group:focus-within .input-group-text {
+            border-color: #6C63FF;
+            color: #6C63FF;
+        }
+
+        .btn-register {
+            background: linear-gradient(135deg, #6C63FF, #5a52d5);
+            color: white;
+            padding: 14px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 1rem;
+            border: none;
+            width: 100%;
+            transition: all 0.3s ease;
+            margin-top: 0.5rem;
+        }
+
+        .btn-register:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(108, 99, 255, 0.4);
+            color: white;
+        }
+
+        .btn-register:active {
+            transform: translateY(0);
+        }
+
+        .password-requirements {
+            font-size: 0.8rem;
+            color: #636e72;
+            margin-top: 0.3rem;
+            padding-left: 0.3rem;
+        }
+
+        .password-requirements .requirement {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.1rem 0;
+        }
+
+        .password-requirements .requirement i {
+            width: 16px;
+            font-size: 0.7rem;
+        }
+
+        .password-requirements .requirement.valid {
+            color: #00b894;
+        }
+
+        .password-requirements .requirement.invalid {
+            color: #FF6584;
+        }
+
+        .flash-messages {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            max-width: 400px;
+            width: 100%;
+        }
+
+        .flash-messages .alert {
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            animation: slideInRight 0.5s ease;
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .login-link {
+            text-align: center;
+            margin-top: 1.5rem;
+            color: #636e72;
+            font-size: 0.95rem;
+        }
+
+        .login-link a {
+            color: #6C63FF;
+            text-decoration: none;
+            font-weight: 700;
+            transition: all 0.3s ease;
+        }
+
+        .login-link a:hover {
+            color: #5a52d5;
+            text-decoration: underline;
+        }
+
+        .back-home {
+            text-align: center;
+            margin-top: 0.8rem;
+        }
+
+        .back-home a {
+            color: #636e72;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .back-home a:hover {
+            color: #6C63FF;
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            margin: 1.5rem 0;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            border-bottom: 2px solid #e9ecef;
+        }
+
+        .divider span {
+            padding: 0 1rem;
+            color: #636e72;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .terms-text {
+            font-size: 0.75rem;
+            color: #636e72;
+            text-align: center;
+            margin-top: 1rem;
+        }
+
+        .terms-text a {
+            color: #6C63FF;
+            text-decoration: none;
+        }
+
+        .terms-text a:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive */
+        @media (max-width: 576px) {
+            .register-card {
+                padding: 1.5rem;
+            }
+
+            .register-header h2 {
+                font-size: 1.5rem;
+            }
+
+            .brand-icon {
+                font-size: 2.5rem;
+            }
+
+            .flash-messages {
+                top: 10px;
+                right: 10px;
+                max-width: calc(100% - 20px);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Flash Messages -->
+    <div class="flash-messages">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category if category != 'message' else 'info' }} alert-dismissible fade show" role="alert">
+                        <i class="fas {% if category == 'success' %}fa-check-circle{% elif category == 'danger' %}fa-exclamation-circle{% else %}fa-info-circle{% endif %} me-2"></i>
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
+
+    <div class="container">
+        <div class="register-container">
+            <div class="register-card">
+                <div class="register-header">
+                    <div class="brand-icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <h2>Todo<span>TheDodo</span></h2>
+                    <p>Create your account and start organizing your tasks!</p>
+                </div>
+
+                <form method="POST" action="{{ url_for('register') }}" id="registerForm">
+                    <!-- Name Field -->
+                    <div class="mb-3">
+                        <label for="name" class="form-label">
+                            <i class="fas fa-user me-1" style="color: #6C63FF;"></i>Full Name
+                        </label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-user"></i></span>
+                            <input type="text" class="form-control" id="name" name="name"
+                                   placeholder="Enter your full name" required
+                                   value="{{ request.form.get('name', '') }}">
+                        </div>
+                    </div>
+
+                    <!-- Email Field -->
+                    <div class="mb-3">
+                        <label for="email" class="form-label">
+                            <i class="fas fa-envelope me-1" style="color: #6C63FF;"></i>Email Address
+                        </label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                            <input type="email" class="form-control" id="email" name="email"
+                                   placeholder="Enter your email" required
+                                   value="{{ request.form.get('email', '') }}">
+                        </div>
+                    </div>
+
+                    <!-- Password Field -->
+                    <div class="mb-3">
+                        <label for="password" class="form-label">
+                            <i class="fas fa-lock me-1" style="color: #6C63FF;"></i>Password
+                        </label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                            <input type="password" class="form-control" id="password" name="password"
+                                   placeholder="Create a password" required>
+                            <button class="btn btn-outline-secondary" type="button" id="togglePassword1">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                        <div class="password-requirements" id="passwordRequirements">
+                            <div class="requirement" id="lengthReq">
+                                <i class="fas fa-circle"></i> At least 6 characters
+                            </div>
+                            <div class="requirement" id="letterReq">
+                                <i class="fas fa-circle"></i> Contains a letter
+                            </div>
+                            <div class="requirement" id="numberReq">
+                                <i class="fas fa-circle"></i> Contains a number
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Confirm Password Field -->
+                    <div class="mb-3">
+                        <label for="confirm_password" class="form-label">
+                            <i class="fas fa-check-circle me-1" style="color: #6C63FF;"></i>Confirm Password
+                        </label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-check"></i></span>
+                            <input type="password" class="form-control" id="confirm_password" name="confirm_password"
+                                   placeholder="Confirm your password" required>
+                            <button class="btn btn-outline-secondary" type="button" id="togglePassword2">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                        <div id="passwordMatch" style="font-size: 0.8rem; margin-top: 0.3rem; padding-left: 0.3rem;">
+                            <i class="fas fa-circle" style="font-size: 0.5rem;"></i> Passwords must match
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-register">
+                        <i class="fas fa-user-plus me-2"></i>Create Account
+                    </button>
+                </form>
+
+                <div class="divider">
+                    <span>OR</span>
+                </div>
+
+                <div class="login-link">
+                    Already have an account? <a href="{{ url_for('login') }}">Login here</a>
+                </div>
+
+                <div class="back-home">
+                    <a href="{{ url_for('home') }}">
+                        <i class="fas fa-arrow-left me-1"></i>Back to Home
+                    </a>
+                </div>
+
+                <div class="terms-text">
+                    By creating an account, you agree to our
+                    <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Auto-dismiss flash messages after 5 seconds
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(function() {
+                const alerts = document.querySelectorAll('.alert');
+                alerts.forEach(function(alert) {
+                    const closeButton = alert.querySelector('.btn-close');
+                    if (closeButton) {
+                        closeButton.click();
+                    }
+                });
+            }, 5000);
+
+            // Password toggle functionality
+            const togglePassword1 = document.getElementById('togglePassword1');
+            const password = document.getElementById('password');
+
+            togglePassword1.addEventListener('click', function() {
+                const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+                password.setAttribute('type', type);
+                this.querySelector('i').classList.toggle('fa-eye');
+                this.querySelector('i').classList.toggle('fa-eye-slash');
+            });
+
+            const togglePassword2 = document.getElementById('togglePassword2');
+            const confirmPassword = document.getElementById('confirm_password');
+
+            togglePassword2.addEventListener('click', function() {
+                const type = confirmPassword.getAttribute('type') === 'password' ? 'text' : 'password';
+                confirmPassword.setAttribute('type', type);
+                this.querySelector('i').classList.toggle('fa-eye');
+                this.querySelector('i').classList.toggle('fa-eye-slash');
+            });
+
+            // Password validation
+            const passwordInput = document.getElementById('password');
+            const confirmInput = document.getElementById('confirm_password');
+            const lengthReq = document.getElementById('lengthReq');
+            const letterReq = document.getElementById('letterReq');
+            const numberReq = document.getElementById('numberReq');
+            const passwordMatch = document.getElementById('passwordMatch');
+
+            passwordInput.addEventListener('input', function() {
+                const value = this.value;
+
+                // Length check
+                if (value.length >= 6) {
+                    lengthReq.className = 'requirement valid';
+                    lengthReq.innerHTML = '<i class="fas fa-check-circle"></i> At least 6 characters';
+                } else {
+                    lengthReq.className = 'requirement invalid';
+                    lengthReq.innerHTML = '<i class="fas fa-circle"></i> At least 6 characters';
+                }
+
+                // Letter check
+                if (/[a-zA-Z]/.test(value)) {
+                    letterReq.className = 'requirement valid';
+                    letterReq.innerHTML = '<i class="fas fa-check-circle"></i> Contains a letter';
+                } else {
+                    letterReq.className = 'requirement invalid';
+                    letterReq.innerHTML = '<i class="fas fa-circle"></i> Contains a letter';
+                }
+
+                // Number check
+                if (/[0-9]/.test(value)) {
+                    numberReq.className = 'requirement valid';
+                    numberReq.innerHTML = '<i class="fas fa-check-circle"></i> Contains a number';
+                } else {
+                    numberReq.className = 'requirement invalid';
+                    numberReq.innerHTML = '<i class="fas fa-circle"></i> Contains a number';
+                }
+
+                // Check password match
+                checkPasswordMatch();
+            });
+
+            confirmInput.addEventListener('input', checkPasswordMatch);
+
+            function checkPasswordMatch() {
+                const password = passwordInput.value;
+                const confirm = confirmInput.value;
+
+                if (confirm.length === 0) {
+                    passwordMatch.innerHTML = '<i class="fas fa-circle" style="font-size: 0.5rem;"></i> Passwords must match';
+                    passwordMatch.style.color = '#636e72';
+                    return;
+                }
+
+                if (password === confirm) {
+                    passwordMatch.innerHTML = '<i class="fas fa-check-circle" style="color: #00b894;"></i> Passwords match!';
+                    passwordMatch.style.color = '#00b894';
+                    confirmInput.className = 'form-control is-valid';
+                } else {
+                    passwordMatch.innerHTML = '<i class="fas fa-times-circle" style="color: #FF6584;"></i> Passwords do not match';
+                    passwordMatch.style.color = '#FF6584';
+                    confirmInput.className = 'form-control is-invalid';
+                }
+            }
+
+            // Form validation before submit
+            document.getElementById('registerForm').addEventListener('submit', function(e) {
+                const password = document.getElementById('password').value;
+                const confirm = document.getElementById('confirm_password').value;
+
+                if (password !== confirm) {
+                    e.preventDefault();
+                    alert('Passwords do not match!');
+                    return false;
+                }
+
+                if (password.length < 6) {
+                    e.preventDefault();
+                    alert('Password must be at least 6 characters!');
+                    return false;
+                }
+            });
+        });
+    </script>
+</body>
+</html>
